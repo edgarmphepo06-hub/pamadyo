@@ -112,11 +112,13 @@ button,input{font:inherit}
 .cart-btn:hover{transform:translateY(-1px);filter:brightness(1.05)}
 
 .nav-menu{
-  position:absolute;
+  position:fixed;
   top:72px;
   left:16px;
   width:260px;
   max-width:calc(100vw - 32px);
+  max-height:calc(100vh - 88px);
+  overflow:auto;
   background:#fff;
   color:#111;
   border-radius:20px;
@@ -169,6 +171,9 @@ button,input{font:inherit}
   padding:36px 16px;
   max-width:1100px;
   margin:auto;
+}
+.section.hidden-section{
+  display:none;
 }
 .section h2{
   font-size:2rem;
@@ -224,7 +229,8 @@ button,input{font:inherit}
 .cart h3{margin-bottom:18px;color:var(--dark)}
 .cart-item{display:flex;justify-content:space-between;margin:10px 0;font-size:.95rem;color:#334155}
 
-input{width:100%;padding:12px;margin:10px 0;border:1px solid #e2e8f0;border-radius:14px;background:#f8fafc}
+input, textarea{width:100%;padding:12px;margin:10px 0;border:1px solid #e2e8f0;border-radius:14px;background:#f8fafc;font:inherit}
+textarea{min-height:140px;resize:vertical}
 
 .btn{width:100%;padding:12px 16px;border:none;border-radius:14px;margin-top:10px;cursor:pointer;font-weight:700;transition:.25s}
 .send{background:var(--dark);color:#fff}
@@ -323,10 +329,11 @@ footer a{color:#fff;text-decoration:underline}
 </div>
 
 <nav class="nav-menu" id="navMenu" aria-label="Site navigation">
-  <a class="nav-link" href="#hero">Home</a>
-  <a class="nav-link" href="#menu">Menu</a>
+  <a class="nav-link" href="#hero" data-target="hero">Home</a>
+  <a class="nav-link" href="#menu" data-target="menu">Menu</a>
   <a class="nav-link" href="#order" data-action="open-cart">Order</a>
-  <a class="nav-link" href="#contact">Contact</a>
+  <a class="nav-link" href="#contact" data-target="contact">Contact</a>
+  <a class="nav-link" href="#inquiries" data-target="inquiries">Inquiries</a>
 </nav>
 
 <!-- HERO -->
@@ -335,7 +342,7 @@ footer a{color:#fff;text-decoration:underline}
 </div>
 
 <!-- MENU -->
-<div class="section" id="menu">
+<div class="section page-section hidden-section" id="menu">
 <h2>🍔 Snacks</h2>
 <p>Browse our signature menu, add favorites to your cart, and send your order to the phone number you provide.</p>
 <div class="grid">
@@ -386,9 +393,21 @@ footer a{color:#fff;text-decoration:underline}
   <button class="btn clear" onclick="clearCart()">Clear cart</button>
 </div>
 
-<div class="section" id="contact">
+<div class="section page-section hidden-section" id="contact">
   <h2>Contact</h2>
-  <p>Enter your full order details and a phone number, then confirm the prompt to send the cart directly to the provided number. Your order is only sent after your approval.</p>
+  <p>Enter your full order details and your phone number, then confirm the WhatsApp prompt to send the order to our team. Your message is only sent after you approve it.</p>
+  <div style="margin-top:18px;padding:18px;border-radius:18px;background:rgba(210,4,45,.08);color:#7c141f;font-weight:600;box-shadow:0 10px 20px rgba(210,4,45,.08);">
+    Thank you for choosing Pamadyo! Once your order is confirmed, we’ll receive it immediately and begin preparing your meal. If you have any special instructions, include them in the message.
+  </div>
+</div>
+
+<div class="section page-section hidden-section" id="inquiries">
+  <h2>Inquiries</h2>
+  <p>If you have a question, dietary preference, delivery note, or any special request, please send it here and our team will respond promptly.</p>
+  <input id="inquiry-name" placeholder="Your Name">
+  <input id="inquiry-phone" placeholder="Your Phone number">
+  <textarea id="inquiry-message" placeholder="Write your inquiry or request here"></textarea>
+  <button class="btn send" onclick="sendInquiry()">Send Inquiry</button>
 </div>
 
 <!-- FOOTER -->
@@ -404,6 +423,7 @@ const menuToggle = document.getElementById('menuToggle');
 const navMenu = document.getElementById('navMenu');
 const cartToggle = document.getElementById('cartToggle');
 const cartPanel = document.getElementById('cart');
+const fixedNumber = '265998136465';
 
 menuToggle.addEventListener('click', () => {
   navMenu.classList.toggle('active');
@@ -416,13 +436,36 @@ cartToggle.addEventListener('click', () => {
 document.querySelectorAll('.nav-link').forEach(link => {
   link.addEventListener('click', event => {
     const action = event.currentTarget.dataset.action;
+    const target = event.currentTarget.dataset.target;
     navMenu.classList.remove('active');
+
     if (action === 'open-cart') {
       event.preventDefault();
       toggleCart(true);
+      return;
+    }
+
+    if (target) {
+      event.preventDefault();
+      showSection(target);
     }
   });
 });
+
+function showSection(target) {
+  document.querySelectorAll('.page-section').forEach(section => {
+    section.classList.toggle('hidden-section', section.id !== target);
+  });
+
+  if (target === 'hero') {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  } else {
+    const section = document.getElementById(target);
+    if (section) {
+      section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+}
 
 function add(name, price) {
   const existing = cart.find(item => item.name === name);
@@ -495,9 +538,31 @@ function checkout() {
   toggleCart(false);
 }
 
+function sendInquiry() {
+  const name = document.getElementById('inquiry-name').value.trim();
+  const phone = document.getElementById('inquiry-phone').value.trim();
+  const messageText = document.getElementById('inquiry-message').value.trim();
+
+  if (!name || !phone || !messageText) {
+    return alert('Please fill in your name, phone, and inquiry message.');
+  }
+
+  const confirmed = confirm('Send this inquiry to our contact number? Press OK to confirm.');
+  if (!confirmed) return;
+
+  const inquiryMessage = `Pamadyo Snack Centre Inquiry\nName: ${name}\nPhone: ${phone}\n---\n${messageText}`;
+  window.open(`https://wa.me/${fixedNumber}?text=${encodeURIComponent(inquiryMessage)}`,'_blank');
+
+  document.getElementById('inquiry-name').value = '';
+  document.getElementById('inquiry-phone').value = '';
+  document.getElementById('inquiry-message').value = '';
+  alert('Your inquiry is ready to send. Thank you!');
+}
+
 window.onload = () => {
   setTimeout(() => document.getElementById('loader').style.display = 'none', 1200);
   render();
+  showSection('hero');
 };
 </script>
 
