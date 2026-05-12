@@ -9,40 +9,40 @@
 
 <style>
 :root{
-  --primary:#ff2e63;
-  --secondary:#ff9f1c;
-  --dark:#0f172a;
-  --bg:#f6f2ed;
+  --primary:#d2042d;
+  --secondary:#ffffff;
+  --dark:#7c141f;
+  --bg:#ffffff;
   --surface:#ffffff;
-  --muted:#64748b;
+  --muted:#8b1b2a;
   --radius:18px;
-  --shadow:0 20px 40px rgba(15,23,42,.12);
+  --shadow:0 20px 40px rgba(220,38,57,.12);
 }
 
 *{margin:0;padding:0;box-sizing:border-box;font-family:Inter,sans-serif}
 html{scroll-behavior:smooth}
-body{background:var(--bg);overflow-x:hidden;color:#111}
+body{background:var(--bg);overflow-x:hidden;color:#1f1f1f}
 button,input{font:inherit}
 
 /* LOADER */
 .loader{
   position:fixed;
   inset:0;
-  background:#0f172a;
+  background:#fff;
   display:flex;
   align-items:center;
   justify-content:center;
   flex-direction:column;
   z-index:9999;
-  color:#fff;
+  color:var(--dark);
   gap:18px;
 }
 .loader-icon{
   width:84px;
   height:84px;
   border-radius:50%;
-  background:linear-gradient(135deg,#ff2e63,#ff9f1c);
-  box-shadow:0 0 42px rgba(255,46,99,.34);
+  background:linear-gradient(135deg,rgba(210,4,45,1),rgba(240,82,93,1));
+  box-shadow:0 0 42px rgba(210,4,45,.28);
   position:relative;
   animation:loader-pulse 1.3s ease-in-out infinite;
 }
@@ -51,7 +51,7 @@ button,input{font:inherit}
   position:absolute;
   inset:14px;
   border-radius:50%;
-  background:rgba(255,255,255,.22);
+  background:rgba(255,255,255,.32);
 }
 .loader-dots{
   display:flex;
@@ -61,7 +61,7 @@ button,input{font:inherit}
   width:14px;
   height:14px;
   border-radius:50%;
-  background:#fff;
+  background:var(--primary);
   opacity:.35;
   animation:loader-bounce 1s infinite ease-in-out;
 }
@@ -78,12 +78,12 @@ button,input{font:inherit}
   justify-content:space-between;
   gap:12px;
   padding:16px 20px;
-  background:rgba(15,23,42,.95);
+  background:#d2042d;
   color:#fff;
   position:sticky;
   top:0;
   z-index:1000;
-  box-shadow:0 10px 30px rgba(15,23,42,.18);
+  box-shadow:0 10px 30px rgba(210,4,45,.22);
 }
 
 .brand{font-weight:800;font-size:1.15rem;letter-spacing:.02em}
@@ -153,7 +153,7 @@ button,input{font:inherit}
   content:"";
   position:absolute;
   inset:0;
-  background:rgba(0,0,0,.45);
+  background:linear-gradient(180deg,rgba(210,4,45,.55),rgba(255,255,255,.05));
 }
 .hero h1{
   font-size:clamp(2.4rem,4vw,3.6rem);
@@ -231,8 +231,8 @@ input{width:100%;padding:12px;margin:10px 0;border:1px solid #e2e8f0;border-radi
 .clear{background:#ef4444;color:#fff}
 .clear:hover{opacity:.95}
 
-footer{margin-top:40px;text-align:center;padding:22px 16px;background:var(--dark);color:#cbd5e1;border-top:1px solid rgba(15,23,42,.08)}
-footer a{color:#ff2e63;text-decoration:none}
+footer{margin-top:40px;text-align:center;padding:22px 16px;background:#d2042d;color:#fff;border-top:1px solid rgba(255,255,255,.18)}
+footer a{color:#fff;text-decoration:underline}
 
 @media(max-width:1024px){
   .navbar{flex-wrap:wrap;justify-content:space-between;gap:12px}
@@ -474,13 +474,9 @@ function checkout() {
     return alert('Please fill in all order details.');
   }
 
-  const confirmed = confirm(`Send your order to ${phone}? Press OK to confirm.`);
+  const fixedNumber = '265998136465';
+  const confirmed = confirm(`Send your order to +265 99 813 6465? Press OK to confirm.`);
   if (!confirmed) return;
-
-  const targetNumber = phone.replace(/\D/g, '');
-  if (targetNumber.length < 8) {
-    return alert('Please enter a valid phone number.');
-  }
 
   let message = `Pamadyo Snack Centre Order\nName: ${customerName}\nPhone: ${phone}\nLocation: ${location}\n---\n`;
   let total = 0;
@@ -491,7 +487,7 @@ function checkout() {
   });
   message += `---\nTotal: MWK ${total}`;
 
-  window.open(`https://wa.me/${targetNumber}?text=${encodeURIComponent(message)}`,'_blank');
+  window.open(`https://wa.me/${fixedNumber}?text=${encodeURIComponent(message)}`,'_blank');
 
   cart = [];
   render();
