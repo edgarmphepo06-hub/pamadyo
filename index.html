@@ -200,7 +200,7 @@ button,input{font:inherit}
   color:var(--muted);
   margin-bottom:20px;
 }
-}
+
 
 .grid{
   display:grid;
@@ -253,8 +253,67 @@ textarea{min-height:140px;resize:vertical}
 .clear{background:#ef4444;color:#fff}
 .clear:hover{opacity:.95}
 
-footer{margin-top:0;text-align:center;padding:30px 20px;background:#d2042d;color:#fff;border-top:1px solid rgba(255,255,255,.18);width:100%}
-footer a{color:#fff;text-decoration:underline}
+footer{
+  margin-top:0;
+  background:#d2042d;
+  color:#fff;
+  border-top:1px solid rgba(255,255,255,.18);
+  width:100%;
+}
+.footer-content{
+  max-width:1200px;
+  margin:0 auto;
+  padding:40px 20px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:30px;
+}
+.footer-section h3{
+  font-size:1.1rem;
+  margin-bottom:14px;
+  font-weight:700;
+}
+.footer-section p{
+  line-height:1.7;
+  font-size:.95rem;
+  opacity:.95;
+}
+.footer-links{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+.footer-links a{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  color:#fff;
+  text-decoration:none;
+  transition:.25s;
+  font-weight:600;
+}
+.footer-links a:hover{
+  opacity:.8;
+  transform:translateX(2px);
+}
+.footer-bottom{
+  text-align:center;
+  padding:20px;
+  border-top:1px solid rgba(255,255,255,.1);
+  font-size:.9rem;
+  opacity:.9;
+}
+
+@media(max-width:768px){
+  .footer-content{
+    padding:28px 16px;
+    gap:24px;
+    grid-template-columns:1fr;
+  }
+  .footer-section h3{
+    font-size:1rem;
+  }
+}
 
 @media(max-width:1024px){
   .navbar{flex-wrap:wrap;justify-content:flex-start;gap:12px}
@@ -429,8 +488,27 @@ footer a{color:#fff;text-decoration:underline}
 
 <!-- FOOTER -->
 <footer>
-© 2026 Pamadyo Snack Centre <br>
-<a href="https://www.facebook.com/vincent.demoticmphepo" target="_blank">Facebook Page</a>
+  <div class="footer-content">
+    <div class="footer-section">
+      <h3>About Us</h3>
+      <p>Pamadyo Snack Centre serves fresh, quality meals with fast delivery. Order now and taste the difference.</p>
+    </div>
+    <div class="footer-section">
+      <h3>Contact</h3>
+      <div class="footer-links">
+        <a href="https://wa.me/265998136465" target="_blank">💬 WhatsApp Orders</a>
+        <a href="tel:+265998136465">📞 Call Us</a>
+        <a href="https://www.facebook.com/vincent.demoticmphepo" target="_blank">📘 Follow on Facebook</a>
+      </div>
+    </div>
+    <div class="footer-section">
+      <h3>Hours</h3>
+      <p>Monday - Friday: 11:00 - 21:00<br>Saturday - Sunday: 12:00 - 22:00<br><em>Orders accepted anytime via WhatsApp</em></p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    © 2026 Pamadyo Snack Centre. All rights reserved.
+  </div>
 </footer>
 </main>
 
