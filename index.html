@@ -141,6 +141,19 @@ button,input{font:inherit}
 }
 .nav-link:hover{background:linear-gradient(135deg,rgba(255,46,99,.12),rgba(255,159,28,.12));color:var(--primary)}
 
+.page-content{
+  margin-left:0;
+  padding:0 24px 60px;
+  transition:margin .3s ease;
+}
+
+@media(min-width:1025px){
+  .page-content{
+    margin-left:300px;
+    padding-right:40px;
+  }
+}
+
 /* HERO */
 .hero{
   min-height:70vh;
@@ -337,6 +350,7 @@ footer a{color:#fff;text-decoration:underline}
 </nav>
 
 <!-- HERO -->
+<main class="page-content">
 <div class="hero" id="hero">
 <h1>Fresh food, fast delivery — order with confidence.</h1>
 </div>
@@ -415,6 +429,7 @@ footer a{color:#fff;text-decoration:underline}
 © 2026 Pamadyo Snack Centre <br>
 <a href="https://www.facebook.com/vincent.demoticmphepo" target="_blank">Facebook Page</a>
 </footer>
+</main>
 
 <script>
 let cart = [];
@@ -456,15 +471,6 @@ function showSection(target) {
   document.querySelectorAll('.page-section').forEach(section => {
     section.classList.toggle('hidden-section', section.id !== target);
   });
-
-  if (target === 'hero') {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  } else {
-    const section = document.getElementById(target);
-    if (section) {
-      section.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  }
 }
 
 function add(name, price) {
